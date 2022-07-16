@@ -1,4 +1,4 @@
-public class Client implements Runnable {
+public class Client extends Thread {
 
     private static final int WAITING_TIME_BETWEEN_BUY = 10;
     String name;

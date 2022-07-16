@@ -11,10 +11,10 @@ public class Main {
         client3.setDealer(dealer);
         client4.setDealer(dealer);
 
-        new Thread(client1).start();
-        new Thread(client2).start();
-        new Thread(client3).start();
-        new Thread(client4).start();
+        client1.start();
+        client2.start();
+        client3.start();
+        client4.start();
 
 
     }
