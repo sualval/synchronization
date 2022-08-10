@@ -1,6 +1,6 @@
 public class Client implements Runnable {
 
-    private static final int WAITING_TIME_BETWEEN_BUY = 10;
+    private static final int WAITING_TIME_BETWEEN_BUY = 100;
     String name;
     Dealer dealer;
 
@@ -13,19 +13,20 @@ public class Client implements Runnable {
     }
 
     public void buyCar() {
-        dealer.sellCar(this);
         try {
             Thread.sleep(WAITING_TIME_BETWEEN_BUY);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        dealer.sellCar(this);
+
+
     }
 
     @Override
     public void run() {
-
         while (!dealer.isInterrupted()) {
-            buyCar();
+            if (!Thread.currentThread().isInterrupted()) {buyCar();}
         }
     }
 }

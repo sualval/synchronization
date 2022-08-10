@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Dealer extends Thread {
     private static final ArrayList<Car> listCar = new ArrayList<>();
-    private static final int WAITING_TIME_BETWEEN_SALES = 50;
+    private static final int WAITING_TIME_BETWEEN_SALES = 90;
     private static final int MAX_CARS_TO_BUY = 10;
     private int count = 0;
 
@@ -10,12 +10,12 @@ public class Dealer extends Thread {
     @Override
     public void run() {
         while (count < MAX_CARS_TO_BUY) {
-            addCar();
             try {
                 Thread.sleep(WAITING_TIME_BETWEEN_SALES);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            addCar();
         }
         currentThread().interrupt();
     }
@@ -33,6 +33,8 @@ public class Dealer extends Thread {
             listCar.remove(0);
             System.out.printf("%s Купил авто,в магазине осталось %d%n", client.name, listCar.size());
             count++;
+            Thread.currentThread().interrupt();
+            return;
         }
         System.out.println("Авто отсутствует для продажи");
         try {
