@@ -13,19 +13,20 @@ public class Client extends Thread {
     }
 
     public void buyCar() {
-        dealer.sellCar(this);
         try {
             Thread.sleep(WAITING_TIME_BETWEEN_BUY);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        dealer.sellCar(this);
     }
 
     @Override
     public void run() {
-
         while (!dealer.isInterrupted()) {
-            buyCar();
+            if (!currentThread().isInterrupted()) {
+                buyCar();
+            }
         }
     }
 }

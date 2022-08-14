@@ -19,12 +19,13 @@ public class Dealer extends Thread {
         while (count < MAX_CARS_TO_BUY) {
             addCar();
         }
-        Thread.currentThread().interrupt();
+        currentThread().interrupt();
     }
 
     public void addCar() {
-        locker.lock();
+
         try {
+            locker.lock();
             Thread.sleep(WAITING_TIME_BETWEEN_SALES);
             listCar.add(new Car("Toyota"));
             System.out.println("Добавлен 1 автомобиль " + listCar.get(0).brand);
@@ -37,18 +38,23 @@ public class Dealer extends Thread {
     }
 
     public void sellCar(Client client) {
-        locker.lock();
+
         try {
+            locker.lock();
             System.out.println(client.name + " зашел в магазин");
             while (listCar.size() != 0) {
                 listCar.remove(0);
                 System.out.printf("%s Купил авто,в магазине осталось %d%n", client.name, listCar.size());
                 count++;
+                currentThread().interrupt();
+                return;
             }
             System.out.println("Авто отсутствует для продажи");
             condition.await();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
+            System.out.println(currentThread().getName());
         } finally {
             locker.unlock();
         }
